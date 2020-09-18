@@ -1,17 +1,26 @@
-import React from 'react';
+import React, {useState } from 'react';
+import AddCategory from './components/AddCategory';
+import  GifGrid from './components/GifGrid';
 
 const GifExpertApp = () =>{
-    const categories = ['One punch', 'Dragon Ball', 'Samurai X']
+    
+    const [categories, setCategories] = useState( [])
 
+    // const handleAdd = () => {
+    //     setCategories([...categories, "Shingeki"])
+    // }
     return (
         <>
-            <h2>Gif Expert App</h2>
+            <h2>Search anything!</h2>
             <hr/>
-            {
-                categories.map( (category) => {
-                    return <li key= {category}>{category}</li>
-                })
-            }
+            <AddCategory setCategories={setCategories}/>
+            <ol className="ol-item">
+                {
+                    categories.map( (category) => {
+                        return <GifGrid category = {category} key={category} />
+                    })
+                }
+            </ol>
         </> 
     )
 }
