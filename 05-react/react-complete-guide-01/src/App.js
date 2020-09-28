@@ -5,21 +5,35 @@ import Person from './components/Person'
 class App extends Component {
   state = {
     persons: [
-      { name: "Frank", age: 25},
-      { name: "Joshua" , age: 20},
-      { name: "Camila", age: 23}
+      { id: 1,name: "Frank", age: 25},
+      { id: 2,name: "Joshua" , age: 20},
+      { id: 3,name: "Camila", age: 23}
     ],
     personsShow: false
   }
 
+  deletePersonHandler = (personIndex) => {
+    console.log(personIndex)
+    const persons = [...this.state.persons]
+    persons.splice(personIndex,1);
+    this.setState({persons: persons});
+  }
 
-  switchNameInput = event => {
-    this.setState({
-      persons: [
-        { name: event.target.value , age: 20},
-        { name: "Frank", age: 25},
-      ]
-    })
+  switchNameInput = (event, id) => {
+    const personIndex = this.state.persons.findIndex( p => {
+      return p.id === id;
+    });
+
+    const person= {
+      ...this.state.persons[personIndex]
+    }
+
+    person.name = event.target.value
+
+    const persons = [...this.state.persons]
+    persons[personIndex] = person
+
+    this.setState( {persons: persons })
   }
 
   switchPersonsShown = () => {
@@ -34,10 +48,12 @@ class App extends Component {
       persons= (
         <div>
         { 
-          this.state.persons.map( person => {
-           return <Person name={person.name} 
+          this.state.persons.map( (person, index) => {
+           return <Person click = {() => this.deletePersonHandler(index) }
+                     name={person.name} 
                      age={person.age} 
-                     />
+                     key={person.id}
+                     change={(event) => { this.switchNameInput(event, person.id) }}/>
           })
         }
         </div>
