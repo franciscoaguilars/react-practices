@@ -6,19 +6,12 @@ class App extends Component {
   state = {
     persons: [
       { name: "Frank", age: 25},
-      { name: "Joshua" , age: 20}
-    ]
+      { name: "Joshua" , age: 20},
+      { name: "Camila", age: 23}
+    ],
+    personsShow: false
   }
 
-
-  switchNameHandler = () => {
-    this.setState({
-      persons: [
-        { name: "Joshua" , age: 20},
-        { name: "Frank", age: 25},
-      ]
-    })
-  }
 
   switchNameInput = event => {
     this.setState({
@@ -29,13 +22,33 @@ class App extends Component {
     })
   }
 
+  switchPersonsShown = () => {
+    this.setState({ personsShow : !this.state.personsShow})
+  }
+
   render () {
+
+    let persons = null
+
+    if (this.state.personsShow){
+      persons= (
+        <div>
+        { 
+          this.state.persons.map( person => {
+           return <Person name={person.name} 
+                     age={person.age} 
+                     />
+          })
+        }
+        </div>
+      )
+    }
+
     return (
       <div className="App">
         <h1>Hello World.</h1>
-        <button onClick={this.switchNameHandler}>weee</button>
-        <Person name={this.state.persons[0].name} age={this.state.persons[0].age} change={this.switchNameInput}/>
-        <Person name={this.state.persons[1].name} age={this.state.persons[1].age}/>
+        <button onClick={this.switchPersonsShown}>Toggle Persons!</button>
+        { persons ? persons : <h1>Click the button!</h1> }
       </div>
     );
   }
